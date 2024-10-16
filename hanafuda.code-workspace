@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "all"
+    },
+    {
+      "path": "frontend"
+    },
+    {
+      "path": "backend"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "haskell.haskell"
+    ]
+  },
+  "settings": {
+    "editor.renderWhitespace": "boundary",
+    "editor.formatOnSave": true,
+    "[jsonc][json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    }
+  }
+}
