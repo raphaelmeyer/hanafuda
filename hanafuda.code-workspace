@@ -21,6 +21,36 @@
     "editor.formatOnSave": true,
     "[jsonc][json]": {
       "editor.defaultFormatter": "vscode.json-language-features"
-    }
+    },
+    "cSpell.words": [
+      "Akatan",
+      "Aotan",
+      "Botan",
+      "Hagi",
+      "Hanafuda",
+      "Hikari",
+      "Houou",
+      "Jichou",
+      "Kakitsubata",
+      "Kasu",
+      "Kiku",
+      "Kiri",
+      "Mankai",
+      "Michikaze",
+      "Mochiduki",
+      "Momiji",
+      "Sakazuki",
+      "Sakura",
+      "Shika",
+      "Susuki",
+      "Tane",
+      "Tanzaku",
+      "Tsubame",
+      "Tsuru",
+      "Uguisu",
+      "Yamajishi",
+      "Yanagi",
+      "Yatsuhashi"
+    ]
   }
 }

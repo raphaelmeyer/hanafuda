@@ -1,0 +1,22 @@
+version: "3"
+
+tasks:
+  build:
+    deps:
+      - backend:build
+
+  test:
+    deps:
+      - backend:test
+
+  backend:build:
+    dir: backend
+    cmds:
+      - cabal build
+
+  backend:test:
+    dir: backend
+    deps:
+      - backend:build
+    cmds:
+      - cabal test --test-show-details streaming
