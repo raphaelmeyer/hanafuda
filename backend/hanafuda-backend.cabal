@@ -22,21 +22,19 @@ common common-properties
 
 library hanafuda
     import:             common-properties
-    exposed-modules:    Cards
-    -- build-depends:
+    exposed-modules:
+        Cards,
+        KoiKoi.Game
+    build-depends:
+        containers
     hs-source-dirs:     src
 
 executable hanafuda-server
     import:             common-properties
     main-is:            Main.hs
-    -- other-modules:
-    -- other-extensions:
     build-depends:
-        base,
         hanafuda
-
     hs-source-dirs:     app
-
     default-language:   Haskell2010
 
 test-suite hanafuda-spec
@@ -44,10 +42,12 @@ test-suite hanafuda-spec
     type:               exitcode-stdio-1.0
     main-is:            Spec.hs
     other-modules:
-        CardSpec
+        CardSpec,
+        KoiKoi.GameSpec
     hs-source-dirs:     test
     build-depends:
         hanafuda,
+        containers,
         hspec
     build-tool-depends:
         hspec-discover:hspec-discover
