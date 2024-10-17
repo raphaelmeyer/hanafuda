@@ -1,6 +1,6 @@
 module Cards where
 
-data Flower
+data Suit
   = Matsu
   | Ume
   | Sakura
@@ -13,11 +13,11 @@ data Flower
   | Momiji
   | Yanagi
   | Kiri
-  deriving (Eq, Show)
+  deriving (Eq, Ord, Show)
 
-data Suit = Hikari | Tane | Tan | Kasu deriving (Eq, Show)
+data Points = Hikari | Tane | Tan | Kasu deriving (Eq, Ord, Show)
 
-data Rank
+data Name
   = Tsuru
   | Mankai
   | Mochiduki
@@ -38,10 +38,10 @@ data Rank
   | One
   | Two
   | Three
-  deriving (Eq, Show)
+  deriving (Eq, Ord, Show)
 
-data Card = Card {flower :: Flower, suit :: Suit, rank :: Rank}
-  deriving (Eq, Show)
+data Card = Card {suit :: Suit, points :: Points, name :: Name}
+  deriving (Eq, Ord, Show)
 
 deck :: [Card]
 deck =
