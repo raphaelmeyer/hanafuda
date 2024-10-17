@@ -19,4 +19,4 @@ tasks:
     deps:
       - backend:build
     cmds:
-      - cabal test --test-show-details streaming
+      - cabal test --test-show-details streaming --test-option=--color
