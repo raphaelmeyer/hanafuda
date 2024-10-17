@@ -13,7 +13,8 @@
   ],
   "extensions": {
     "recommendations": [
-      "haskell.haskell"
+      "haskell.haskell",
+      "streetsidesoftware.code-spell-checker"
     ]
   },
   "settings": {
