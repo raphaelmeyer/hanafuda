@@ -1,4 +1,4 @@
-module KoiKoi.Game (Pile, emptyPile, makePile, withPoints, score) where
+module KoiKoi.Game (Pile, emptyPile, makePile, score) where
 
 import Cards
 import qualified Data.Set as Set
@@ -14,7 +14,7 @@ makePile :: [Cards.Card] -> Pile
 makePile = Pile . Set.fromList
 
 score :: Pile -> Int
-score pile = if kasu == 10 then 1 else 0
+score pile = if kasu >= 10 then kasu - 9 else 0
   where
     kasu = length . withPoints Cards.Kasu $ pile
 

@@ -21,3 +21,7 @@ spec = do
 
       it "scores one point for ten cards" $ do
         (Game.score . Game.makePile . take 10 $ kasu) `shouldBe` 1
+
+      it "scores on additional point for each additional card" $ do
+        (Game.score . Game.makePile . take 11 $ kasu) `shouldBe` 2
+        (Game.score . Game.makePile . take 14 $ kasu) `shouldBe` 5
