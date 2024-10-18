@@ -1,6 +1,6 @@
 module KoiKoi.GameSpec where
 
-import qualified Cards
+import Cards
 import qualified KoiKoi.Game as Game
 import Test.Hspec
 
@@ -12,7 +12,7 @@ spec = do
         Game.score Game.emptyPile `shouldBe` 0
 
     describe "kasu" $ do
-      let kasu = filter ((== Cards.Kasu) . Cards.points) Cards.deck
+      let kasu = withPoints Kasu deck
 
       it "scores no points for less than ten cards" $ do
         (Game.score . Game.makePile . take 1 $ kasu) `shouldBe` 0

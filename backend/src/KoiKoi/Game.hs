@@ -16,16 +16,4 @@ makePile = Pile . Set.fromList
 score :: Pile -> Int
 score pile = if kasu >= 10 then kasu - 9 else 0
   where
-    kasu = length . withPoints Cards.Kasu $ pile
-
--- isSuit :: Suit -> Card -> Bool
--- isSuit s = (== s) . suit
-
-hasPoints :: Points -> Card -> Bool
-hasPoints p = (== p) . points
-
--- hasName :: Name -> Card -> Bool
--- hasName n = (== n) . name
-
-withPoints :: Points -> Pile -> [Card]
-withPoints p = Set.toList . Set.filter (hasPoints p) . unPile
+    kasu = length . withPoints Cards.Kasu . Set.toList . unPile $ pile

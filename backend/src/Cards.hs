@@ -1,4 +1,17 @@
-module Cards where
+module Cards
+  ( Suit (..),
+    Points (..),
+    Name (..),
+    Card,
+    deck,
+    makeCard,
+    isSuit,
+    hasPoints,
+    hasName,
+    withPoints,
+    withName,
+  )
+where
 
 data Suit
   = Matsu
@@ -94,3 +107,25 @@ deck =
     Card Kiri Kasu Two,
     Card Kiri Kasu Three
   ]
+
+makeCard :: Suit -> Points -> Name -> Card
+makeCard s p n =
+  let card = Card s p n
+   in if card `elem` deck
+        then card
+        else error "invalid card"
+
+isSuit :: Suit -> Card -> Bool
+isSuit s = (== s) . suit
+
+hasPoints :: Points -> Card -> Bool
+hasPoints p = (== p) . points
+
+hasName :: Name -> Card -> Bool
+hasName n = (== n) . name
+
+withPoints :: Points -> [Card] -> [Card]
+withPoints p = filter (hasPoints p)
+
+withName :: Name -> [Card] -> [Card]
+withName n = filter (hasName n)
