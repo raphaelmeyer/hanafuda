@@ -76,6 +76,32 @@ spec = do
                 ]
         Game.score pile `shouldBe` 0
 
+    describe "special combinations" $ do
+      it "scores five points for hanami ni ippai" $ do
+        let hanami =
+              Game.makePile
+                [ makeCard Sakura Hikari Mankai,
+                  makeCard Kiku Tane Sakazuki
+                ]
+        Game.score hanami `shouldBe` 5
+
+      it "scores five points for tsukimi ni ippai" $ do
+        let tsukimi =
+              Game.makePile
+                [ makeCard Susuki Hikari Mochiduki,
+                  makeCard Kiku Tane Sakazuki
+                ]
+        Game.score tsukimi `shouldBe` 5
+
+      it "scores five points for ino-shika-chou" $ do
+        let ino =
+              Game.makePile
+                [ makeCard Hagi Tane Yamajishi,
+                  makeCard Momiji Tane Shika,
+                  makeCard Botan Tane Chou
+                ]
+        Game.score ino `shouldBe` 5
+
     describe "whole pile" $ do
       it "should add up all valid scores" $ do
         let kasu = withPoints Kasu deck
