@@ -12,7 +12,7 @@ spec = do
         Game.score Game.emptyPile `shouldBe` 0
 
     describe "kasu" $ do
-      let kasu = withPoints Kasu deck
+      let kasu = withRank Kasu deck
 
       it "scores no points for less than ten cards" $ do
         (Game.score . Game.makePile . take 1 $ kasu) `shouldBe` 0
@@ -30,81 +30,68 @@ spec = do
       it "scores ten points for all five hikari cards" $ do
         let pile =
               Game.makePile
-                [ makeCard Matsu Hikari Tsuru,
-                  makeCard Sakura Hikari Mankai,
-                  makeCard Susuki Hikari Mochiduki,
-                  makeCard Yanagi Hikari Michikaze,
-                  makeCard Kiri Hikari Houou
+                [ fromName Tsuru,
+                  fromName Mankai,
+                  fromName Mochizuki,
+                  fromName Michikaze,
+                  fromName Houou
                 ]
         Game.score pile `shouldBe` 10
 
       it "scores eight points for four hikari cards excluding Ono no Michikaze" $ do
         let pile =
               Game.makePile
-                [ makeCard Matsu Hikari Tsuru,
-                  makeCard Sakura Hikari Mankai,
-                  makeCard Susuki Hikari Mochiduki,
-                  makeCard Kiri Hikari Houou
+                [ fromName Tsuru,
+                  fromName Mankai,
+                  fromName Mochizuki,
+                  fromName Houou
                 ]
         Game.score pile `shouldBe` 8
 
       it "scores seven points for four hikari cards including Ono no Michikaze" $ do
         let pile =
               Game.makePile
-                [ makeCard Matsu Hikari Tsuru,
-                  makeCard Susuki Hikari Mochiduki,
-                  makeCard Yanagi Hikari Michikaze,
-                  makeCard Kiri Hikari Houou
+                [ fromName Tsuru,
+                  fromName Mochizuki,
+                  fromName Michikaze,
+                  fromName Houou
                 ]
         Game.score pile `shouldBe` 7
 
       it "scores five points for three hikari cards excluding Ono no Michikaze" $ do
         let pile =
               Game.makePile
-                [ makeCard Matsu Hikari Tsuru,
-                  makeCard Sakura Hikari Mankai,
-                  makeCard Kiri Hikari Houou
+                [ fromName Tsuru,
+                  fromName Mankai,
+                  fromName Houou
                 ]
         Game.score pile `shouldBe` 5
 
       it "scores no points for other combinations" $ do
         let pile =
               Game.makePile
-                [ makeCard Sakura Hikari Mankai,
-                  makeCard Yanagi Hikari Michikaze,
-                  makeCard Kiri Hikari Houou
+                [ fromName Mankai,
+                  fromName Michikaze,
+                  fromName Houou
                 ]
         Game.score pile `shouldBe` 0
 
     describe "special combinations" $ do
       it "scores five points for hanami ni ippai" $ do
-        let hanami =
-              Game.makePile
-                [ makeCard Sakura Hikari Mankai,
-                  makeCard Kiku Tane Sakazuki
-                ]
+        let hanami = Game.makePile [fromName Mankai, fromName Sakazuki]
         Game.score hanami `shouldBe` 5
 
       it "scores five points for tsukimi ni ippai" $ do
-        let tsukimi =
-              Game.makePile
-                [ makeCard Susuki Hikari Mochiduki,
-                  makeCard Kiku Tane Sakazuki
-                ]
+        let tsukimi = Game.makePile [fromName Mochizuki, fromName Sakazuki]
         Game.score tsukimi `shouldBe` 5
 
       it "scores five points for ino-shika-chou" $ do
-        let ino =
-              Game.makePile
-                [ makeCard Hagi Tane Yamajishi,
-                  makeCard Momiji Tane Shika,
-                  makeCard Botan Tane Chou
-                ]
+        let ino = Game.makePile [fromName Yamajishi, fromName Shika, fromName Chou]
         Game.score ino `shouldBe` 5
 
     describe "whole pile" $ do
       it "should add up all valid scores" $ do
-        let kasu = withPoints Kasu deck
-        let hikari = withPoints Hikari deck
+        let kasu = withRank Kasu deck
+        let hikari = withRank Hikari deck
         let pile = Game.makePile $ take 12 kasu ++ hikari
         Game.score pile `shouldBe` 13

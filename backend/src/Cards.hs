@@ -1,15 +1,13 @@
 module Cards
-  ( Suit (..),
-    Points (..),
+  ( Card,
+    Suit (..),
+    Rank (..),
     Name (..),
-    Card,
     deck,
-    makeCard,
-    isSuit,
-    hasPoints,
+    fromName,
     hasName,
-    withPoints,
-    withName,
+    withRank,
+    withSuit,
   )
 where
 
@@ -28,104 +26,165 @@ data Suit
   | Kiri
   deriving (Eq, Ord, Show)
 
-data Points = Hikari | Tane | Tan | Kasu deriving (Eq, Ord, Show)
+data Rank = Hikari | Tane | Akatan | Aotan | Tanzaku | Kasu
+  deriving (Eq, Ord, Show)
+
+data Card
+  = MatsuNiTsuru
+  | MatsuNiAkatan
+  | MatsuNoKasu1
+  | MatsuNoKasu2
+  | UmeNiUguisu
+  | UmeNiAkatan
+  | UmeNoKasu1
+  | UmeNoKasu2
+  | SakuraNiManmaku
+  | SakuraNiAkatan
+  | SakuraNoKasu1
+  | SakuraNoKasu2
+  | FujiNiJichou
+  | FujiNiTanzaku
+  | FujiNoKasu1
+  | FujiNoKasu2
+  | KakitsubataNiYatsuhashi
+  | KakitsubataNiTanzaku
+  | KakitsubataNoKasu1
+  | KakitsubataNoKasu2
+  | BotanNiChou
+  | BotanNiAotan
+  | BotanNoKasu1
+  | BotanNoKasu2
+  | HagiNiYamajishi
+  | HagiNiTanzaku
+  | HagiNoKasu1
+  | HagiNoKasu2
+  | SusukiNiMochizuki
+  | SusukiNiKari
+  | SusukiNoKasu1
+  | SusukiNoKasu2
+  | KikuNiSakazuki
+  | KikuNiAotan
+  | KikuNoKasu1
+  | KikuNoKasu2
+  | MomijiNiShika
+  | MomijiNiAotan
+  | MomijiNoKasu1
+  | MomijiNoKasu2
+  | YanagiNiMichikaze
+  | YanagiNiTsubame
+  | YanagiNiTanzaku
+  | YanagiNoKasu
+  | KiriNiHouou
+  | KiriNoKasu1
+  | KiriNoKasu2
+  | KiriNoKasu3
+  deriving (Eq, Ord, Show)
+
+data Description = Description
+  { card :: Card,
+    suit :: Suit,
+    rank :: Rank
+  }
+
+cards :: [Description]
+cards =
+  [ Description MatsuNiTsuru Matsu Hikari,
+    Description MatsuNiAkatan Matsu Akatan,
+    Description MatsuNoKasu1 Matsu Kasu,
+    Description MatsuNoKasu2 Matsu Kasu,
+    Description UmeNiUguisu Ume Tane,
+    Description UmeNiAkatan Ume Akatan,
+    Description UmeNoKasu1 Ume Kasu,
+    Description UmeNoKasu2 Ume Kasu,
+    Description SakuraNiManmaku Sakura Hikari,
+    Description SakuraNiAkatan Sakura Akatan,
+    Description SakuraNoKasu1 Sakura Kasu,
+    Description SakuraNoKasu2 Sakura Kasu,
+    Description FujiNiJichou Fuji Tane,
+    Description FujiNiTanzaku Fuji Tanzaku,
+    Description FujiNoKasu1 Fuji Kasu,
+    Description FujiNoKasu2 Fuji Kasu,
+    Description KakitsubataNiYatsuhashi Kakitsubata Tane,
+    Description KakitsubataNiTanzaku Kakitsubata Tanzaku,
+    Description KakitsubataNoKasu1 Kakitsubata Kasu,
+    Description KakitsubataNoKasu2 Kakitsubata Kasu,
+    Description BotanNiChou Botan Tane,
+    Description BotanNiAotan Botan Aotan,
+    Description BotanNoKasu1 Botan Kasu,
+    Description BotanNoKasu2 Botan Kasu,
+    Description HagiNiYamajishi Hagi Tane,
+    Description HagiNiTanzaku Hagi Tanzaku,
+    Description HagiNoKasu1 Hagi Kasu,
+    Description HagiNoKasu2 Hagi Kasu,
+    Description SusukiNiMochizuki Susuki Hikari,
+    Description SusukiNiKari Susuki Tane,
+    Description SusukiNoKasu1 Susuki Kasu,
+    Description SusukiNoKasu2 Susuki Kasu,
+    Description KikuNiSakazuki Kiku Tane,
+    Description KikuNiAotan Kiku Aotan,
+    Description KikuNoKasu1 Kiku Kasu,
+    Description KikuNoKasu2 Kiku Kasu,
+    Description MomijiNiShika Momiji Tane,
+    Description MomijiNiAotan Momiji Aotan,
+    Description MomijiNoKasu1 Momiji Kasu,
+    Description MomijiNoKasu2 Momiji Kasu,
+    Description YanagiNiMichikaze Yanagi Hikari,
+    Description YanagiNiTsubame Yanagi Tane,
+    Description YanagiNiTanzaku Yanagi Tanzaku,
+    Description YanagiNoKasu Yanagi Kasu,
+    Description KiriNiHouou Kiri Hikari,
+    Description KiriNoKasu1 Kiri Kasu,
+    Description KiriNoKasu2 Kiri Kasu,
+    Description KiriNoKasu3 Kiri Kasu
+  ]
+
+deck :: [Card]
+deck = map card cards
 
 data Name
   = Tsuru
-  | Mankai
-  | Mochiduki
-  | Michikaze
-  | Houou
   | Uguisu
-  | Jichou
+  | Mankai
+  | Hototogisu
   | Yatsuhashi
   | Chou
   | Yamajishi
+  | Mochizuki
   | Kari
   | Sakazuki
   | Shika
+  | Michikaze
   | Tsubame
-  | Akatan
-  | Aotan
-  | Tanzaku
-  | One
-  | Two
-  | Three
+  | Houou
   deriving (Eq, Ord, Show)
 
-data Card = Card {suit :: Suit, points :: Points, name :: Name}
-  deriving (Eq, Ord, Show)
-
-deck :: [Card]
-deck =
-  [ Card Matsu Hikari Tsuru,
-    Card Matsu Tan Akatan,
-    Card Matsu Kasu One,
-    Card Matsu Kasu Two,
-    Card Ume Tane Uguisu,
-    Card Ume Tan Akatan,
-    Card Ume Kasu One,
-    Card Ume Kasu Two,
-    Card Sakura Hikari Mankai,
-    Card Sakura Tan Akatan,
-    Card Sakura Kasu One,
-    Card Sakura Kasu Two,
-    Card Fuji Tane Jichou,
-    Card Fuji Tan Tanzaku,
-    Card Fuji Kasu One,
-    Card Fuji Kasu Two,
-    Card Kakitsubata Tane Yatsuhashi,
-    Card Kakitsubata Tan Tanzaku,
-    Card Kakitsubata Kasu One,
-    Card Kakitsubata Kasu Two,
-    Card Botan Tane Chou,
-    Card Botan Tan Aotan,
-    Card Botan Kasu One,
-    Card Botan Kasu Two,
-    Card Hagi Tane Yamajishi,
-    Card Hagi Tan Tanzaku,
-    Card Hagi Kasu One,
-    Card Hagi Kasu Two,
-    Card Susuki Hikari Mochiduki,
-    Card Susuki Tane Kari,
-    Card Susuki Kasu One,
-    Card Susuki Kasu Two,
-    Card Kiku Tane Sakazuki,
-    Card Kiku Tan Aotan,
-    Card Kiku Kasu One,
-    Card Kiku Kasu Two,
-    Card Momiji Tane Shika,
-    Card Momiji Tan Aotan,
-    Card Momiji Kasu One,
-    Card Momiji Kasu Two,
-    Card Yanagi Hikari Michikaze,
-    Card Yanagi Tane Tsubame,
-    Card Yanagi Tan Tanzaku,
-    Card Yanagi Kasu One,
-    Card Kiri Hikari Houou,
-    Card Kiri Kasu One,
-    Card Kiri Kasu Two,
-    Card Kiri Kasu Three
-  ]
-
-makeCard :: Suit -> Points -> Name -> Card
-makeCard s p n =
-  let card = Card s p n
-   in if card `elem` deck
-        then card
-        else error "invalid card"
-
-isSuit :: Suit -> Card -> Bool
-isSuit s = (== s) . suit
-
-hasPoints :: Points -> Card -> Bool
-hasPoints p = (== p) . points
+fromName :: Name -> Card
+fromName Tsuru = MatsuNiTsuru
+fromName Uguisu = UmeNiUguisu
+fromName Mankai = SakuraNiManmaku
+fromName Hototogisu = FujiNiJichou
+fromName Yatsuhashi = KakitsubataNiYatsuhashi
+fromName Chou = BotanNiChou
+fromName Yamajishi = HagiNiYamajishi
+fromName Mochizuki = SusukiNiMochizuki
+fromName Kari = SusukiNiKari
+fromName Sakazuki = KikuNiSakazuki
+fromName Shika = MomijiNiShika
+fromName Michikaze = YanagiNiMichikaze
+fromName Tsubame = YanagiNiTsubame
+fromName Houou = KiriNiHouou
 
 hasName :: Name -> Card -> Bool
-hasName n = (== n) . name
+hasName n c = fromName n == c
 
-withPoints :: Points -> [Card] -> [Card]
-withPoints p = filter (hasPoints p)
+withRank :: Rank -> [Card] -> [Card]
+withRank r = with ((== r) . rank)
 
-withName :: Name -> [Card] -> [Card]
-withName n = filter (hasName n)
+withSuit :: Suit -> [Card] -> [Card]
+withSuit s = with ((== s) . suit)
+
+with :: (Description -> Bool) -> [Card] -> [Card]
+with cond = map card . filter cond . descriptions
+
+descriptions :: [Card] -> [Description]
+descriptions cs = filter ((`elem` cs) . card) cards

@@ -26,21 +26,21 @@ scoreHikari cards = case (length hikari, raining) of
   (3, False) -> 5
   _ -> 0
   where
-    hikari = withPoints Hikari cards
-    raining = not . null . withName Michikaze $ hikari
+    hikari = withRank Hikari cards
+    raining = any (hasName Michikaze) hikari
 
 scoreKasu :: [Card] -> Int
 scoreKasu cards = if kasu >= 10 then kasu - 9 else 0
   where
-    kasu = length . withPoints Kasu $ cards
+    kasu = length . withRank Kasu $ cards
 
 scoreSpecials :: [Card] -> Int
 scoreSpecials cards = (* 5) . length . filter id $ sets
   where
-    sakura = not . null . withName Mankai $ cards
-    tsuki = not . null . withName Mochiduki $ cards
-    sake = not . null . withName Sakazuki $ cards
-    ino = not . null . withName Yamajishi $ cards
-    shika = not . null . withName Shika $ cards
-    chou = not . null . withName Chou $ cards
+    sakura = any (hasName Mankai) cards
+    tsuki = any (hasName Mochizuki) cards
+    sake = any (hasName Sakazuki) cards
+    ino = any (hasName Yamajishi) cards
+    shika = any (hasName Shika) cards
+    chou = any (hasName Chou) cards
     sets = [sakura && sake, tsuki && sake, ino && shika && chou]

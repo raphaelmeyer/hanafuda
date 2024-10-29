@@ -23,38 +23,5 @@
     "[jsonc][json]": {
       "editor.defaultFormatter": "vscode.json-language-features"
     },
-    "cSpell.words": [
-      "Akatan",
-      "Aotan",
-      "Botan",
-      "Hagi",
-      "Hanafuda",
-      "hanami",
-      "Hikari",
-      "Houou",
-      "ippai",
-      "Jichou",
-      "Kakitsubata",
-      "Kasu",
-      "Kiku",
-      "Kiri",
-      "Mankai",
-      "Michikaze",
-      "Mochiduki",
-      "Momiji",
-      "Sakazuki",
-      "Sakura",
-      "Shika",
-      "Susuki",
-      "Tane",
-      "Tanzaku",
-      "Tsubame",
-      "tsukimi",
-      "Tsuru",
-      "Uguisu",
-      "Yamajishi",
-      "Yanagi",
-      "Yatsuhashi"
-    ]
   }
 }
