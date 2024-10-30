@@ -14,7 +14,7 @@ makePile :: [Card] -> Pile
 makePile = Pile . Set.fromList
 
 score :: Pile -> Int
-score pile = scoreHikari cards + scoreKasu cards + scoreSpecials cards
+score pile = scoreHikari cards + scoreKasu cards + scoreSpecials cards + scoreTane cards
   where
     cards = Set.toList . unPile $ pile
 
@@ -28,6 +28,11 @@ scoreHikari cards = case (length hikari, raining) of
   where
     hikari = withRank Hikari cards
     raining = any (hasName Michikaze) hikari
+
+scoreTane :: [Card] -> Int
+scoreTane cards = if tane >= 5 then tane - 4 else 0
+  where
+    tane = length . withRank Tane $ cards
 
 scoreKasu :: [Card] -> Int
 scoreKasu cards = if kasu >= 10 then kasu - 9 else 0

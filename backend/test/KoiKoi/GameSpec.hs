@@ -26,6 +26,41 @@ spec = do
         (Game.score . Game.makePile . take 11 $ kasu) `shouldBe` 2
         (Game.score . Game.makePile . take 14 $ kasu) `shouldBe` 5
 
+    describe "tane" $ do
+      it "scores no points for less than five cards" $ do
+        let pile =
+              Game.makePile
+                [ fromName Hototogisu,
+                  fromName Chou,
+                  fromName Kari,
+                  fromName Tsubame
+                ]
+        Game.score pile `shouldBe` 0
+
+      it "scores one point for five cards" $ do
+        let pile =
+              Game.makePile
+                [ fromName Hototogisu,
+                  fromName Yatsuhashi,
+                  fromName Chou,
+                  fromName Kari,
+                  fromName Tsubame
+                ]
+        Game.score pile `shouldBe` 1
+
+      it "scores one additional point for each additional tane card" $ do
+        let pile =
+              Game.makePile
+                [ fromName Uguisu,
+                  fromName Hototogisu,
+                  fromName Yatsuhashi,
+                  fromName Yamajishi,
+                  fromName Kari,
+                  fromName Sakazuki,
+                  fromName Tsubame
+                ]
+        Game.score pile `shouldBe` 3
+
     describe "hikari" $ do
       it "scores ten points for all five hikari cards" $ do
         let pile =
