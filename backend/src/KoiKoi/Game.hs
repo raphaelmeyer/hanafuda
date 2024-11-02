@@ -30,9 +30,16 @@ scoreHikari cards = case (length hikari, raining) of
     raining = any (hasName Michikaze) hikari
 
 scoreTane :: [Card] -> Int
-scoreTane cards = if tane >= 5 then tane - 4 else 0
+scoreTane cards
+  | inoshikachou = 5 + tane - 3
+  | tane >= 5 = tane - 4
+  | otherwise = 0
   where
     tane = length . withRank Tane $ cards
+    inoshikachou =
+      elemName Yamajishi cards
+        && elemName Shika cards
+        && elemName Chou cards
 
 scoreKasu :: [Card] -> Int
 scoreKasu cards = if kasu >= 10 then kasu - 9 else 0
@@ -40,12 +47,10 @@ scoreKasu cards = if kasu >= 10 then kasu - 9 else 0
     kasu = length . withRank Kasu $ cards
 
 scoreSpecials :: [Card] -> Int
-scoreSpecials cards = (* 5) . length . filter id $ sets
+scoreSpecials cards =
+  (if sakura && sake then 5 else 0)
+    + (if tsuki && sake then 5 else 0)
   where
-    sakura = any (hasName Mankai) cards
-    tsuki = any (hasName Mochizuki) cards
-    sake = any (hasName Sakazuki) cards
-    ino = any (hasName Yamajishi) cards
-    shika = any (hasName Shika) cards
-    chou = any (hasName Chou) cards
-    sets = [sakura && sake, tsuki && sake, ino && shika && chou]
+    sakura = elemName Mankai cards
+    tsuki = elemName Mochizuki cards
+    sake = elemName Sakazuki cards
