@@ -6,6 +6,7 @@ module Cards
     deck,
     fromName,
     hasName,
+    elemName,
     withRank,
     withSuit,
   )
@@ -176,6 +177,9 @@ fromName Houou = KiriNiHouou
 
 hasName :: Name -> Card -> Bool
 hasName n c = fromName n == c
+
+elemName :: Name -> [Card] -> Bool
+elemName n = any (hasName n)
 
 withRank :: Rank -> [Card] -> [Card]
 withRank r = with ((== r) . rank)

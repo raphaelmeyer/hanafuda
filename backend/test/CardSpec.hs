@@ -38,9 +38,20 @@ spec = do
       let kasu = Cards.withRank Cards.Kasu Cards.deck
       length kasu `shouldBe` 24
 
-  describe "card" $ do
-    it "may have a name" $ do
+  describe "card name" $ do
+    it "name should match card" $ do
       Cards.fromName Cards.Houou `shouldSatisfy` Cards.hasName Cards.Houou
 
-      let ino = head . Cards.withRank Cards.Tane . Cards.withSuit Cards.Kiku $ Cards.deck
-      ino `shouldNotSatisfy` Cards.hasName Cards.Yamajishi
+      let ino = Cards.withRank Cards.Tane . Cards.withSuit Cards.Kiku $ Cards.deck
+      length ino `shouldBe` 1
+      head ino `shouldNotSatisfy` Cards.hasName Cards.Yamajishi
+
+    it "should check if named card is in pile" $ do
+      let hikari = Cards.withRank Cards.Hikari $ Cards.deck
+      let tane = Cards.withRank Cards.Tane $ Cards.deck
+
+      hikari `shouldSatisfy` Cards.elemName Cards.Mankai
+      tane `shouldNotSatisfy` Cards.elemName Cards.Mankai
+
+      tane `shouldSatisfy` Cards.elemName Cards.Sakazuki
+      hikari `shouldNotSatisfy` Cards.elemName Cards.Sakazuki
