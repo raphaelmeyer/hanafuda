@@ -26,26 +26,67 @@ spec = do
         (Game.score . Game.makePile . take 11 $ kasu) `shouldBe` 2
         (Game.score . Game.makePile . take 14 $ kasu) `shouldBe` 5
 
-    describe "tane" $ do
-      it "scores five points for ino-shika-chou" $ do
-        let ino =
-              Game.makePile
-                [ fromName Yamajishi,
-                  fromName Shika,
-                  fromName Chou
-                ]
-        Game.score ino `shouldBe` 5
+    describe "tan" $ do
+      let akatan = withRank Akatan deck
+      let aotan = withRank Aotan deck
+      let tanzaku = withRank Tanzaku deck
 
-      it "scores one additional point for each additional tane card" $ do
-        let pile =
-              Game.makePile
-                [ fromName Yamajishi,
-                  fromName Shika,
-                  fromName Chou,
-                  fromName Yatsuhashi,
-                  fromName Kari
-                ]
-        Game.score pile `shouldBe` 7
+      describe "akatan" $ do
+        it "scores five points for all three akatan cards" $ do
+          let pile = Game.makePile akatan
+          Game.score pile `shouldBe` 5
+
+        it "scores one additional point for each additional tan card" $ do
+          let pile = Game.makePile (akatan ++ take 1 aotan ++ take 1 tanzaku)
+          Game.score pile `shouldBe` 7
+
+      describe "aotan" $ do
+        it "scores five points for all three aotan cards" $ do
+          let pile = Game.makePile aotan
+          Game.score pile `shouldBe` 5
+
+        it "scores one additional point for each additional tan card" $ do
+          let pile = Game.makePile (aotan ++ take 2 akatan ++ take 1 tanzaku)
+          Game.score pile `shouldBe` 8
+
+      describe "akatan and aotan duplication" $ do
+        it "scores ten points for all six akatan and aotan cards" $ do
+          let pile = Game.makePile (akatan ++ aotan)
+          Game.score pile `shouldBe` 10
+
+        it "scores one additional point for each additional tan card" $ do
+          let pile = Game.makePile (akatan ++ aotan ++ take 1 tanzaku)
+          Game.score pile `shouldBe` 11
+
+      it "scores one point for five tan cards" $ do
+        let pile = Game.makePile (take 2 akatan ++ take 1 aotan ++ take 2 tanzaku)
+        Game.score pile `shouldBe` 1
+
+      it "scores one additional point for each additional tan card" $ do
+        let pile = Game.makePile (take 1 akatan ++ take 2 aotan ++ take 4 tanzaku)
+        Game.score pile `shouldBe` 3
+
+    describe "tane" $ do
+      describe "ino-shika-chou" $ do
+        it "scores five points for ino-shika-chou" $ do
+          let ino =
+                Game.makePile
+                  [ fromName Yamajishi,
+                    fromName Shika,
+                    fromName Chou
+                  ]
+          Game.score ino `shouldBe` 5
+
+        it "scores one additional point for each additional tane card" $ do
+          let pile =
+                Game.makePile
+                  [ fromName Yamajishi,
+                    fromName Shika,
+                    fromName Chou,
+                    fromName Yatsuhashi,
+                    fromName Kari
+                  ]
+          Game.score pile `shouldBe` 7
 
       it "scores no points for less than five cards" $ do
         let pile =

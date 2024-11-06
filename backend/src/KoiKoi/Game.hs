@@ -14,7 +14,7 @@ makePile :: [Card] -> Pile
 makePile = Pile . Set.fromList
 
 score :: Pile -> Int
-score pile = scoreHikari cards + scoreKasu cards + scoreSpecials cards + scoreTane cards
+score pile = scoreHikari cards + scoreKasu cards + scoreSpecials cards + scoreTane cards + scoreTan cards
   where
     cards = Set.toList . unPile $ pile
 
@@ -40,6 +40,20 @@ scoreTane cards
       elemName Yamajishi cards
         && elemName Shika cards
         && elemName Chou cards
+
+scoreTan :: [Card] -> Int
+scoreTan cards
+  | akatan == 3 && aotan == 3 = 10 + tanzaku
+  | akatan == 3 = 5 + (aotan + tanzaku)
+  | aotan == 3 = 5 + (akatan + tanzaku)
+  | anyTan >= 5 = anyTan - 4
+  | otherwise = 0
+  where
+    count = length . flip withRank cards
+    akatan = count Akatan
+    aotan = count Aotan
+    tanzaku = count Tanzaku
+    anyTan = akatan + aotan + tanzaku
 
 scoreKasu :: [Card] -> Int
 scoreKasu cards = if kasu >= 10 then kasu - 9 else 0
