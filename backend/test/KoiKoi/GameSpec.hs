@@ -182,8 +182,30 @@ spec = do
         Game.score tsukimi `shouldBe` 5
 
     describe "whole pile" $ do
+      let hikari = withRank Hikari deck
+      let akatan = withRank Akatan deck
+      let aotan = withRank Aotan deck
+      let tanzaku = withRank Tanzaku deck
+      let kasu = withRank Kasu deck
+
+      it "should score no points for a pile with no yaku" $ do
+        let pile =
+              Game.makePile
+                ( take 9 kasu
+                    ++ take 2 akatan
+                    ++ take 2 aotan
+                    ++ [fromName Yamajishi, fromName Chou, fromName Hototogisu, fromName Tsubame]
+                    ++ [fromName Tsuru, fromName Mochizuki, fromName Michikaze]
+                )
+        Game.score pile `shouldBe` 0
+
       it "should add up all valid scores" $ do
-        let kasu = withRank Kasu deck
-        let hikari = withRank Hikari deck
-        let pile = Game.makePile $ take 12 kasu ++ hikari
-        Game.score pile `shouldBe` 13
+        let pile =
+              Game.makePile
+                ( take 12 kasu
+                    ++ hikari
+                    ++ aotan
+                    ++ (take 2 tanzaku)
+                    ++ [fromName Sakazuki]
+                )
+        Game.score pile `shouldBe` 30
