@@ -24,7 +24,8 @@ library hanafuda
     import:             common-properties
     exposed-modules:
         Cards,
-        KoiKoi.Game
+        KoiKoi.Game,
+        KoiKoi.GameEvent
     build-depends:
         containers
     hs-source-dirs:     src
