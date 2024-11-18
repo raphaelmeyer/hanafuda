@@ -5,6 +5,7 @@ module KoiKoi.Game
     Result (..),
     Player (..),
     emptyHand,
+    makeHand,
     emptyPile,
     makePile,
     pileCards,
@@ -18,6 +19,9 @@ newtype Hand = Hand {unHand :: Set.Set Cards.Card} deriving (Eq, Show)
 
 emptyHand :: Hand
 emptyHand = Hand Set.empty
+
+makeHand :: [Card] -> Hand
+makeHand = Hand . Set.fromList
 
 newtype Pile = Pile {unPile :: Set.Set Cards.Card} deriving (Eq, Show)
 
