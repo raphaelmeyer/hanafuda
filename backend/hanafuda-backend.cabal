@@ -25,7 +25,8 @@ library hanafuda
     exposed-modules:
         Cards,
         KoiKoi.Game,
-        KoiKoi.GameEvent
+        KoiKoi.GameEvent,
+        KoiKoi.Score
     build-depends:
         containers
     hs-source-dirs:     src

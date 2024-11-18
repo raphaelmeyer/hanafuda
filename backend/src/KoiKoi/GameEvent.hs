@@ -2,8 +2,7 @@
 
 module KoiKoi.GameEvent (gameLoopM, runGame, emptyGameState) where
 
-import Cards
-import qualified Data.Set as Set
+import KoiKoi.Game
 
 type Score = Int
 
@@ -14,14 +13,6 @@ data Result = Result
   deriving (Eq, Show)
 
 data Player = Oya | Ko deriving (Eq, Ord, Show)
-
-newtype Hand = Hand {unHand :: Set.Set Cards.Card} deriving (Eq, Show)
-
-emptyHand :: Hand
-emptyHand =
-  Hand
-    { unHand = Set.empty
-    }
 
 data GameEvent
   = HandDealt Player Hand
