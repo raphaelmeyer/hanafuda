@@ -24,6 +24,8 @@ library hanafuda
     import:             common-properties
     exposed-modules:
         Cards,
+        GameHandler,
+        GameIO,
         KoiKoi.Game,
         KoiKoi.GameEvent,
         KoiKoi.GameState,

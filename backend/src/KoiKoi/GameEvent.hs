@@ -1,15 +1,24 @@
 {-# LANGUAGE InstanceSigs #-}
 
-module KoiKoi.GameEvent (gameLoopM, runGame, emptyGameState) where
+module KoiKoi.GameEvent
+  ( GameEvent,
+    GameCommand (..),
+    gameLoopM,
+    runGame,
+    emptyGameState,
+  )
+where
 
 import KoiKoi.Game
 import KoiKoi.GameState
 
 data GameEvent
   = HandDealt Player Hand
+  deriving (Show)
 
 data GameCommand
   = DealHands Hand Hand -- oya ko
+  deriving (Show)
 
 data Game a
   = EmitEvent GameEvent (() -> Game a)
@@ -50,10 +59,13 @@ gameProcessEvent (HandDealt player hand) state =
     { gameStateHands = dealHand player hand (gameStateHands state)
     }
 
-runGame :: Game a -> GameState -> (Either (GameCommand -> Game a) a, GameState, [GameEvent])
+runGame :: Game a -> GameState -> (Either (GameCommand -> Game a) a, GameState)
 runGame (EmitEvent event cont) state =
   runGame (cont ()) (gameProcessEvent event state)
-runGame _ _ = undefined
+runGame (GetCommand cont) state =
+  (Left cont, state)
+runGame (Return result) state =
+  (Right result, state)
 
 gameLoopM :: GameCommand -> Game Result
 gameLoopM command = do

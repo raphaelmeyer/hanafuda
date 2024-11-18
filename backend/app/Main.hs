@@ -1,4 +1,6 @@
 module Main where
 
+import qualified GameHandler
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = GameHandler.run
