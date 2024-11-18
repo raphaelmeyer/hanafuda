@@ -26,6 +26,7 @@ library hanafuda
         Cards,
         KoiKoi.Game,
         KoiKoi.GameEvent,
+        KoiKoi.GameState,
         KoiKoi.Score
     build-depends:
         containers

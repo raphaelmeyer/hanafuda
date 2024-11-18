@@ -3,6 +3,7 @@
 module KoiKoi.GameEvent (gameLoopM, runGame, emptyGameState) where
 
 import KoiKoi.Game
+import KoiKoi.GameState
 
 data GameEvent
   = HandDealt Player Hand
@@ -42,35 +43,6 @@ processCommandM (DealHands oya ko) = do
   emitEventM (HandDealt Oya oya)
   emitEventM (HandDealt Ko ko)
   pure Nothing
-
-data PlayerHands = PlayerHands
-  { playerHandOya :: Hand,
-    playerHandKo :: Hand
-  }
-
-newtype GameState = GameState
-  { gameStateHands :: PlayerHands
-  }
-
-emptyGameState :: GameState
-emptyGameState =
-  GameState
-    { gameStateHands =
-        PlayerHands
-          { playerHandOya = emptyHand,
-            playerHandKo = emptyHand
-          }
-    }
-
-dealHand :: Player -> Hand -> PlayerHands -> PlayerHands
-dealHand Oya hand hands =
-  hands
-    { playerHandOya = hand
-    }
-dealHand Ko hand hands =
-  hands
-    { playerHandKo = hand
-    }
 
 gameProcessEvent :: GameEvent -> GameState -> GameState
 gameProcessEvent (HandDealt player hand) state =
