@@ -1,6 +1,9 @@
 module KoiKoi.Game
   ( Hand,
     Pile,
+    Score,
+    Result (..),
+    Player (..),
     emptyHand,
     emptyPile,
     makePile,
@@ -26,3 +29,13 @@ makePile = Pile . Set.fromList
 
 pileCards :: Pile -> [Card]
 pileCards = Set.toList . unPile
+
+type Score = Int
+
+data Result = Result
+  { scoreOya :: Score,
+    scoreKo :: Score
+  }
+  deriving (Eq, Show)
+
+data Player = Oya | Ko deriving (Eq, Ord, Show)

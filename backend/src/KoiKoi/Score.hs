@@ -3,7 +3,7 @@ module KoiKoi.Score (score) where
 import Cards
 import KoiKoi.Game
 
-score :: Pile -> Int
+score :: Pile -> Score
 score pile =
   scoreHikari cards
     + scoreKasu cards
@@ -13,7 +13,7 @@ score pile =
   where
     cards = pileCards pile
 
-scoreHikari :: [Card] -> Int
+scoreHikari :: [Card] -> Score
 scoreHikari cards = case (length hikari, raining) of
   (5, _) -> 10
   (4, False) -> 8
@@ -24,7 +24,7 @@ scoreHikari cards = case (length hikari, raining) of
     hikari = withRank Hikari cards
     raining = any (hasName Michikaze) hikari
 
-scoreTane :: [Card] -> Int
+scoreTane :: [Card] -> Score
 scoreTane cards
   | inoshikachou = 5 + tane - 3
   | tane >= 5 = tane - 4
@@ -36,7 +36,7 @@ scoreTane cards
         && elemName Shika cards
         && elemName Chou cards
 
-scoreTan :: [Card] -> Int
+scoreTan :: [Card] -> Score
 scoreTan cards
   | akatan == 3 && aotan == 3 = 10 + tanzaku
   | akatan == 3 = 5 + (aotan + tanzaku)
@@ -50,12 +50,12 @@ scoreTan cards
     tanzaku = count Tanzaku
     anyTan = akatan + aotan + tanzaku
 
-scoreKasu :: [Card] -> Int
+scoreKasu :: [Card] -> Score
 scoreKasu cards = if kasu >= 10 then kasu - 9 else 0
   where
     kasu = length . withRank Kasu $ cards
 
-scoreSpecials :: [Card] -> Int
+scoreSpecials :: [Card] -> Score
 scoreSpecials cards =
   (if sakura && sake then 5 else 0)
     + (if tsuki && sake then 5 else 0)

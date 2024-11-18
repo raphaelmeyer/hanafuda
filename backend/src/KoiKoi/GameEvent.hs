@@ -4,16 +4,6 @@ module KoiKoi.GameEvent (gameLoopM, runGame, emptyGameState) where
 
 import KoiKoi.Game
 
-type Score = Int
-
-data Result = Result
-  { scoreOya :: Score,
-    scoreKo :: Score
-  }
-  deriving (Eq, Show)
-
-data Player = Oya | Ko deriving (Eq, Ord, Show)
-
 data GameEvent
   = HandDealt Player Hand
 
