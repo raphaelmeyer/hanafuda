@@ -1,21 +1,18 @@
 module GameIO where
 
 import qualified Cards
-import qualified Cards as Card
 import KoiKoi.Game
 import KoiKoi.GameEvent
 import KoiKoi.GameState
-
-shuffle :: [Card.Card] -> IO [Card.Card]
-shuffle = pure
+import qualified System.Random.Stateful as Random
 
 gameIO :: IO (GameCommand -> IO ())
 gameIO = do
   -- ref <- IORef.newIORef (gameLoopM, emptyGameState)
-  deck <- shuffle Cards.deck
+  deck <- shufflePile (makePile Cards.deck) Random.globalStdGen
   let state =
         emptyGameState
-          { gameStateDrawPile = makePile deck
+          { gameStateDrawPile = deck
           }
       processCommand command = do
         -- (next, state) <- IORef.readIORef ref

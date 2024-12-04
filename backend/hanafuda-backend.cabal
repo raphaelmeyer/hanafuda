@@ -31,7 +31,8 @@ library hanafuda
         KoiKoi.GameState,
         KoiKoi.Score
     build-depends:
-        containers
+        containers,
+        random
     hs-source-dirs:     src
 
 executable hanafuda-server
