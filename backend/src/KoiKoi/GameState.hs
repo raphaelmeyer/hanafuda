@@ -1,6 +1,15 @@
-module KoiKoi.GameState where
+module KoiKoi.GameState
+  ( GameState,
+    emptyGameState,
+    shuffleDeck,
+    dealToTable,
+    dealHand,
+  )
+where
 
+import qualified Cards
 import KoiKoi.Game
+import qualified System.Random.Stateful as Random
 
 data PlayerHands = PlayerHands
   { playerHandOya :: Hand,
@@ -27,15 +36,52 @@ emptyGameState =
           }
     }
 
-dealHand :: Player -> Hand -> PlayerHands -> PlayerHands
-dealHand Oya hand hands =
-  hands
-    { playerHandOya = hand
-    }
-dealHand Ko hand hands =
-  hands
-    { playerHandKo = hand
-    }
+shuffleDeck :: (Random.StatefulGen g m) => GameState -> g -> m GameState
+shuffleDeck state g = do
+  shuffled <- shuffle Cards.deck g
+  pure
+    state
+      { gameStateDrawPile = makePile shuffled,
+        gameStateTable = emptyPile,
+        gameStateHands =
+          PlayerHands
+            { playerHandOya = emptyHand,
+              playerHandKo = emptyHand
+            }
+      }
 
-drawCards :: Int -> Pile -> Pile
-drawCards n = makePile . drop n . pileCards
+dealToTable :: GameState -> GameState
+dealToTable state =
+  state
+    { gameStateDrawPile = drawPile,
+      gameStateTable = addToPile cards (gameStateTable state)
+    }
+  where
+    (cards, drawPile) = drawFromPile 8 (gameStateDrawPile state)
+
+dealHand :: Player -> GameState -> GameState
+dealHand Oya state =
+  state
+    { gameStateDrawPile = drawPile,
+      gameStateHands = hands {playerHandOya = addToHand cards . playerHandOya . gameStateHands $ state}
+    }
+  where
+    hands = gameStateHands state
+    (cards, drawPile) = drawFromPile 8 (gameStateDrawPile state)
+dealHand Ko state =
+  state
+    { gameStateDrawPile = drawPile,
+      gameStateHands = hands {playerHandKo = addToHand cards . playerHandKo . gameStateHands $ state}
+    }
+  where
+    hands = gameStateHands state
+    (cards, drawPile) = drawFromPile 8 (gameStateDrawPile state)
+
+shuffle :: (Random.StatefulGen g m) => [a] -> g -> m [a]
+shuffle [] _ = pure []
+shuffle list g = do
+  i <- Random.uniformRM (0, length list - 1) g
+  let (front, back) = splitAt i list
+  let x = head back
+  xs <- shuffle (tail back ++ front) g
+  pure $ x : xs

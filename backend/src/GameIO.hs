@@ -1,7 +1,5 @@
 module GameIO where
 
-import qualified Cards
-import KoiKoi.Game
 import KoiKoi.GameEvent
 import KoiKoi.GameState
 import qualified System.Random.Stateful as Random
@@ -9,12 +7,8 @@ import qualified System.Random.Stateful as Random
 gameIO :: IO (GameCommand -> IO ())
 gameIO = do
   -- ref <- IORef.newIORef (gameLoopM, emptyGameState)
-  deck <- shufflePile (makePile Cards.deck) Random.globalStdGen
-  let state =
-        emptyGameState
-          { gameStateDrawPile = deck
-          }
-      processCommand command = do
+  state <- shuffleDeck emptyGameState Random.globalStdGen
+  let processCommand command = do
         -- (next, state) <- IORef.readIORef ref
         print command
         let (step, state') = runGame (gameLoopM command) state

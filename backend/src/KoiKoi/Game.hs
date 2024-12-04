@@ -6,16 +6,17 @@ module KoiKoi.Game
     Player (..),
     emptyHand,
     makeHand,
+    addToHand,
     emptyPile,
     makePile,
+    addToPile,
+    drawFromPile,
     pileCards,
-    shufflePile,
   )
 where
 
 import Cards
 import qualified Data.Set as Set
-import qualified System.Random.Stateful as Random
 
 newtype Hand = Hand {unHand :: Set.Set Cards.Card} deriving (Eq, Show)
 
@@ -25,6 +26,9 @@ emptyHand = Hand Set.empty
 makeHand :: [Card] -> Hand
 makeHand = Hand . Set.fromList
 
+addToHand :: [Card] -> Hand -> Hand
+addToHand cards (Hand hand) = Hand (foldr Set.insert hand cards)
+
 newtype Pile = Pile {unPile :: [Cards.Card]} deriving (Eq, Show)
 
 emptyPile :: Pile
@@ -33,22 +37,14 @@ emptyPile = Pile []
 makePile :: [Card] -> Pile
 makePile = Pile
 
+addToPile :: [Card] -> Pile -> Pile
+addToPile cards (Pile pile) = Pile (pile ++ cards)
+
+drawFromPile :: Int -> Pile -> ([Cards.Card], Pile)
+drawFromPile n (Pile pile) = (take n pile, Pile $ drop n pile)
+
 pileCards :: Pile -> [Card]
 pileCards = unPile
-
-shufflePile :: (Random.StatefulGen g m) => Pile -> g -> m Pile
-shufflePile (Pile cards) g = do
-  shuffled <- shuffle cards g
-  pure (Pile shuffled)
-
-shuffle :: (Random.StatefulGen g m) => [a] -> g -> m [a]
-shuffle [] _ = pure []
-shuffle list g = do
-  i <- Random.uniformRM (0, length list - 1) g
-  let (front, back) = splitAt i list
-  let x = head back
-  xs <- shuffle (tail back ++ front) g
-  pure $ x : xs
 
 type Score = Int
 
